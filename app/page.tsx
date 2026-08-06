@@ -85,7 +85,7 @@ const msgs = [
   "Claude re-reads your entire history before responding. Long conversations accumulate extensive re-reading. Extensive re-reading explains rapid token consumption. A fresh start resolves this.",
 ];
 
-const thinking = [
+const thinkingPool = [
   'Analyzing context window...',
   'Scanning conversation history...',
   'Calculating token usage...',
@@ -94,7 +94,48 @@ const thinking = [
   'Processing context chains...',
   'Evaluating re-read overhead...',
   'Finalizing diagnosis...',
+  'Measuring token consumption patterns...',
+  'Reviewing conversation structure...',
+  'Analyzing memory overhead...',
+  'Calculating efficiency metrics...',
+  'Processing accumulated data...',
+  'Evaluating response patterns...',
+  'Mapping context dependencies...',
+  'Quantifying usage impact...',
+  'Assessing conversation depth...',
+  'Analyzing message frequency...',
+  'Computing overhead ratios...',
+  'Reviewing efficiency factors...',
+  'Evaluating cost structure...',
+  'Analyzing usage trajectory...',
+  'Processing diagnostic data...',
+  'Measuring context density...',
+  'Assessing re-reading patterns...',
+  'Computing token burn rate...',
+  'Analyzing conversation growth...',
+  'Evaluating resource usage...',
+  'Processing system metrics...',
+  'Calculating performance impact...',
+  'Reviewing usage distribution...',
+  'Analyzing message relationships...',
+  'Measuring cumulative overhead...',
+  'Assessing pattern recognition...',
+  'Computing efficiency score...',
+  'Evaluating data density...',
+  'Analyzing processing load...',
+  'Calculating token allocation...',
+  'Processing usage analytics...',
+  'Finalizing assessment...',
 ];
+
+const shuffle = (arr: string[]) => {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
 
 export default function Home() {
   const [inp, setInp] = useState('');
@@ -102,8 +143,19 @@ export default function Home() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [thinkIdx, setThinkIdx] = useState(0);
+  const [thinking, setThinking] = useState<string[]>([]);
 
   const troubleshoot = () => {
+    const selected = [];
+    const pool = [...thinkingPool];
+    for (let i = 0; i < 8; i++) {
+      const idx = Math.floor(Math.random() * pool.length);
+      selected.push(pool[idx]);
+      pool.splice(idx, 1);
+    }
+    const shuffled = shuffle(selected);
+    setThinking(shuffled);
+
     setLoading(true);
     setThinkIdx(0);
     setShow(true);
@@ -111,7 +163,7 @@ export default function Home() {
     let idx = 0;
     const interval = setInterval(() => {
       idx += 1;
-      if (idx >= thinking.length) {
+      if (idx >= 8) {
         clearInterval(interval);
         const m = msgs[Math.floor(Math.random() * msgs.length)];
         setRes(m);
@@ -138,9 +190,12 @@ export default function Home() {
       }}
     >
       <div style={{ maxWidth: '600px', width: '100%' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '30px', fontSize: '32px', fontWeight: '600' }}>
+        <h1 style={{ textAlign: 'center', marginBottom: '12px', fontSize: '32px', fontWeight: '600' }}>
           Claude Usage Troubleshooting
         </h1>
+        <p style={{ textAlign: 'center', marginBottom: '30px', fontSize: '14px', color: '#666', maxWidth: '500px', margin: '0 auto 30px' }}>
+          Diagnose apparent usage limitations, perceived model restrictions, and unexplained token consumption with immediate clarity.
+        </p>
 
         <div style={{ marginBottom: '20px' }}>
           <input
