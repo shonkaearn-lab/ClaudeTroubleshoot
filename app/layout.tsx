@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Claude Troubleshoot',
-  description: 'Instant Claude troubleshooting',
+  title: 'Claude Usage Troubleshooting',
+  description: 'Diagnose Claude usage issues',
 };
 
 export default function RootLayout({
