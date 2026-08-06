@@ -89,15 +89,41 @@ const msgs = [
   "Claude re-reads your entire history. Long chats = tons of re-reading = token burn. Fresh start = problem solved.",
 ];
 
+const thinking = [
+  'Analyzing context window...',
+  'Scanning conversation history...',
+  'Calculating token usage...',
+  'Compressing chat logs...',
+  'Assessing message density...',
+  'Processing context chains...',
+  'Evaluating re-read overhead...',
+  'Finalizing diagnosis...',
+];
+
 export default function Home() {
   const [inp, setInp] = useState('');
   const [res, setRes] = useState('');
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [thinkIdx, setThinkIdx] = useState(0);
 
   const troubleshoot = () => {
-    const m = msgs[Math.floor(Math.random() * msgs.length)];
-    setRes(m);
+    setLoading(true);
+    setThinkIdx(0);
     setShow(true);
+
+    let idx = 0;
+    const interval = setInterval(() => {
+      idx += 1;
+      if (idx >= thinking.length) {
+        clearInterval(interval);
+        const m = msgs[Math.floor(Math.random() * msgs.length)];
+        setRes(m);
+        setLoading(false);
+      } else {
+        setThinkIdx(idx);
+      }
+    }, 1000);
   };
 
   const handleKey = (e: React.KeyboardEvent) => {
@@ -166,8 +192,8 @@ export default function Home() {
               alignItems: 'center',
             }}
           >
-            <p style={{ margin: '0', lineHeight: '1.6', fontSize: '16px' }}>
-              {res}
+            <p style={{ margin: '0', lineHeight: '1.6', fontSize: '16px', color: loading ? '#666' : '#000' }}>
+              {loading ? thinking[thinkIdx] : res}
             </p>
           </div>
         )}
